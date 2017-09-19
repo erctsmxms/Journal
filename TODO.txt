@@ -1,0 +1,1 @@
+Program crashes silently when config.json is missing. Need to make it if it is missing. Should maybe be part of jf/config.py.
