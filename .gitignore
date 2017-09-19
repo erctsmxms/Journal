@@ -1,2 +1,2 @@
 config.json
-jf/__pycache__
+*.pyc
