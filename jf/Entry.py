@@ -20,6 +20,7 @@ class Entry():
 		self.tags = []
 		self.title = ""
 		self.text = ""
+		self.__file_name = ""
 
 	@classmethod
 	def load(cls, file_name, directory=config.directory):
@@ -32,6 +33,7 @@ class Entry():
 		entry.tags = data["tags"]
 		entry.title = data["title"]
 		entry.text = data["text"]
+		entry.__file_name = file_name
 
 		return entry
 
@@ -51,11 +53,14 @@ class Entry():
 
 	@property
 	def file_name(self):
-		"""Generates the filename to be used when saving
+		"""Generates or loads the filename to be used when saving
 		"""
-		date = self.str_date
-		time = self.str_time.replace(":", "-")
-		return "{} - {}.json".format(date, time)
+		if not self.__file_name:
+			date = self.str_date
+			time = self.str_time.replace(":", "-")
+			self.__file_name = "{} - {}.json".format(date, time)
+
+		return self.__file_name
 
 	@property
 	def str_date(self):
