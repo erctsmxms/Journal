@@ -1,3 +1,4 @@
 config.json
-.test entries
 *.pyc
+.test entries
+jf/__pycache__
