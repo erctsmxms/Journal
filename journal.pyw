@@ -145,9 +145,15 @@ class Journal_tk(tk.Tk):
 		self.var_tags_label.set("Tags: " + ", ".join(entry.tags))
 
 	def on_entry_list_doubleclick(self, event):
-		# TODO
-		# This should idealy open the Journal Entry window in edit mode
-		pass
+		# TODO: This doesn't work. The new window doesn't contain the
+		# entry's info. Focus can also be given back to master window,
+		# which ideally shouldn't happen.
+		index = self.entry_list.curselection()[0]
+		entry = self.entries[index]
+		app = journalentry.Journalentry_tk(self.__repr__(), entry)
+		app.title("Journal - Edit")
+		app.iconbitmap("media/icon.ico")
+		app.mainloop()
 
 	def on_entry_delete(self, event):
 		title = "Delete entry"
