@@ -1,1 +1,3 @@
 Program crashes silently when config.json is missing. Need to make it if it is missing. Should maybe be part of jf/config.py.
+
+Tags aren't stripped when saved. Can't decide wether they need to be stripped in journalentry.pyw or jf/entry.py. Probably both.
