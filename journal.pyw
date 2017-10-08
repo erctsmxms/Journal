@@ -1,6 +1,7 @@
 import tkinter as tk
 import tkinter.ttk
 import tkinter.font
+import tkinter.messagebox
 
 import jf
 
@@ -72,6 +73,7 @@ class Journal_tk(tk.Tk):
 
 		self.entry_list.bind("<ButtonRelease-1>", self.on_entry_list_select)
 		self.entry_list.bind("<Double-Button-1>", self.on_entry_list_doubleclick)
+		self.entry_list.bind("<Delete>", self.on_entry_delete)
 
 		##########
 		# Preview
@@ -146,6 +148,22 @@ class Journal_tk(tk.Tk):
 		# TODO
 		# This should idealy open the Journal Entry window in edit mode
 		pass
+
+	def on_entry_delete(self, event):
+		title = "Delete entry"
+		message = "Are you sure you wish to delete this entry?\n" + \
+		          "This action cannot be undone."
+		should_delete = tk.messagebox.askyesno(title, message, icon="warning")
+
+		if should_delete:
+			index = self.entry_list.curselection()[0]
+			self.entries[index].delete()
+			self.var_preview_label.set("")
+			self.preview_text.config(state="normal")
+			self.preview_text.delete("1.0", "end")
+			self.preview_text.config(state="disable")
+			self.var_tags_label.set("")
+			self.load_entries()
 
 	def on_search_input_enter(self, event):
 		self.search_result_update()

@@ -1,4 +1,5 @@
 import json
+import os
 from datetime import datetime
 
 from .config import config
@@ -48,6 +49,9 @@ class Entry():
 		file_name = "{}/{}".format(config.directory, self.file_name)
 		with open(file_name, "w") as f:
 			json.dump(data, f, ensure_ascii=True)
+
+	def delete(self):
+		os.remove("{}/{}".format(config.directory, self.file_name))
 
 	###########################################################################
 
