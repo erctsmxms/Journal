@@ -156,20 +156,29 @@ class Journal_tk(tk.Tk):
 		app.mainloop()
 
 	def on_entry_delete(self, event):
+		index = self.entry_list.curselection()[0]
+		entry = self.entries[index]
+		name = f"{entry.str_date} {entry.str_time_short}"
+		if entry.title:
+			name += f" {entry.title}"
 		title = "Delete entry"
-		message = "Are you sure you wish to delete this entry?\n" + \
-		          "This action cannot be undone."
+		message = f"Are you sure you wish to delete entry \"{name}\"?\n" + \
+		           "This action cannot be undone."
 		should_delete = tk.messagebox.askyesno(title, message, icon="warning")
 
 		if should_delete:
-			index = self.entry_list.curselection()[0]
-			self.entries[index].delete()
-			self.var_preview_label.set("")
-			self.preview_text.config(state="normal")
-			self.preview_text.delete("1.0", "end")
-			self.preview_text.config(state="disable")
-			self.var_tags_label.set("")
-			self.load_entries()
+			try:
+				index = self.entry_list.curselection()[0]
+				self.entries[index].delete()
+				self.var_preview_label.set("")
+				self.preview_text.config(state="normal")
+				self.preview_text.delete("1.0", "end")
+				self.preview_text.config(state="disable")
+				self.var_tags_label.set("")
+				self.load_entries()
+			except Exception as e:
+				e = f"Could no delete entry.\n" + str(e)
+				tk.messagebox.showwarning("Exception", e)
 
 	def on_search_input_enter(self, event):
 		self.search_result_update()
