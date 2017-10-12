@@ -71,7 +71,7 @@ class Journal_tk(tk.Tk):
 		self.entry_list.grid(column=0, row=0, sticky="ns")
 		entry_scroll.grid(column=1, row=0, sticky="ns")
 
-		self.entry_list.bind("<ButtonRelease-1>", self.on_entry_list_select)
+		self.entry_list.bind("<<ListboxSelect>>", self.on_entry_list_select)
 		self.entry_list.bind("<Double-Button-1>", self.on_entry_list_doubleclick)
 		self.entry_list.bind("<Delete>", self.on_entry_delete)
 
