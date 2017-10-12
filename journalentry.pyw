@@ -44,11 +44,8 @@ class Journalentry_tk(tk.Tk):
 		frame_text.rowconfigure(0, weight=1)
 		frame_tags.columnconfigure(1, weight=1)
 
-<<<<<<< HEAD
-=======
 		########
 		# Title
->>>>>>> master
 		self.date_label = tk.Label(frame_title,
 		                           anchor="w",
 		                           textvariable=self.var_date_label,
