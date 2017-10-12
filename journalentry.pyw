@@ -10,10 +10,14 @@ class Journalentry_tk(tk.Toplevel):
 	def __init__(self, parent=None, entry=None, standalone=False):
 		tk.Toplevel.__init__(self, parent)
 		self.parent = parent
+
 		if entry is None:
 			self.entry = jf.Entry()
 		else:
 			self.entry = entry
+			self.transient(parent)
+			self.geometry("+{}+{}".format(parent.winfo_rootx() + 0,
+			                              parent.winfo_rooty() + 0))
 
 		self.protocol("WM_DELETE_WINDOW", self.on_close)
 		self.standalone = standalone
