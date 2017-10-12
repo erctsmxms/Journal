@@ -98,6 +98,15 @@ class Journalentry_tk(tk.Toplevel):
 		self.update()
 		self.minsize(self.winfo_width(), self.winfo_height())
 
+	def has_changes(self):
+		title = self.entry.title != self.var_title_input.get().strip()
+		text = self.entry.text != self.text_input.get("1.0", "end-1c")
+		tags = ", ".join(self.entry.tags) != self.var_tags_input.get()
+
+		if title or text or tags:
+			return True
+		return False
+
 	def on_save_click(self, event):
 		try:
 			title = self.var_title_input.get().strip()
@@ -106,25 +115,31 @@ class Journalentry_tk(tk.Toplevel):
 			# Strips and removes empty tags
 			tags = [i.strip() for i in tags if i.strip()]
 
-			if text.strip() == "":
-				tk.messagebox.showwarning("Oops",
-				                          "There is nothing to save.\n" +
-				                          "Did you forget body text?")
+			if not self.has_changes():
+				tk.messagebox.showwarning("Oops", "There is nothing to save.")
 			else:
 				self.entry.title = title
 				self.entry.text = text
 				self.entry.tags = tags
 				self.entry.save()
 
-				self.on_close()
+				self.on_close(skip_check=True)
 		except Exception as e:
 			e = str(e) + "\nBackup your entry and fix the error, you lazy bum."
 			tk.messagebox.showwarning("Exception", e)
 
-	def on_close(self):
-		self.destroy()
-		if self.standalone:
-			self.parent.destroy()
+	def on_close(self, skip_check=False):
+		should_not_save = True
+		if self.has_changes() and not skip_check:
+			title = "Unsaved changes"
+			message = f"You have unsaved changes.\nAre you sure you want to exit?"
+			should_not_save = tk.messagebox.askokcancel(title, message,
+			                                            icon="warning")
+
+		if should_not_save or skip_check:
+			self.destroy()
+			if self.standalone:
+				self.parent.destroy()
 
 
 def open_edit(parent, entry):
@@ -138,6 +153,7 @@ def open_edit(parent, entry):
 if __name__ == "__main__":
 	root = tk.Tk()
 	root.withdraw()
+	root.iconbitmap("media/icon.ico")
 	app = Journalentry_tk(root, standalone=True)
 	app.title("Journal - Entry")
 	app.iconbitmap("media/icon.ico")
