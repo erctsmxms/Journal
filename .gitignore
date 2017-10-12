@@ -1,2 +1,3 @@
-.test entries
+entries
 *.pyc
+config.json
