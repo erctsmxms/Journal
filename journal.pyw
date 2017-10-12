@@ -4,6 +4,7 @@ import tkinter.font
 import tkinter.messagebox
 
 import jf
+import journalentry
 
 
 class Journal_tk(tk.Tk):
@@ -150,10 +151,7 @@ class Journal_tk(tk.Tk):
 		# which ideally shouldn't happen.
 		index = self.entry_list.curselection()[0]
 		entry = self.entries[index]
-		app = journalentry.Journalentry_tk(self.__repr__(), entry)
-		app.title("Journal - Edit")
-		app.iconbitmap("media/icon.ico")
-		app.mainloop()
+		journalentry.open_edit(self, entry)
 
 	def on_entry_delete(self, event):
 		index = self.entry_list.curselection()[0]
