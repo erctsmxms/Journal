@@ -8,6 +8,18 @@ class config():
 	"""
 	# Init
 	__config_path = "config.json"
+	if not os.path.isfile(__config_path):
+		__data = {
+			"journal directory": "./entries",
+			"font": {
+				"family": "consolas",
+				"label size": 10,
+				"content size": 11
+			}
+		}
+		with open(__config_path, "w") as f:
+			json.dump(__data, f, ensure_ascii=True, indent=4)
+
 	with open(__config_path, "r") as f:
 		__data = json.load(f)
 
