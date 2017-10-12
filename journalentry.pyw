@@ -6,26 +6,29 @@ import tkinter.messagebox
 import jf
 
 
-class Journalentry_tk(tk.Tk):
-	def __init__(self, master=None, entry=None):
-		tk.Tk.__init__(self, None)
-		#self.parent = parent
+class Journalentry_tk(tk.Toplevel):
+	def __init__(self, parent=None, entry=None, standalone=False):
+		tk.Toplevel.__init__(self, parent)
+		self.parent = parent
 		if entry is None:
 			self.entry = jf.Entry()
 		else:
-			print("loaded")
 			self.entry = entry
-		print(self.entry.datetime)
+
+		self.protocol("WM_DELETE_WINDOW", self.on_close)
+		self.standalone = standalone
 		self.initialize()
 
 	def initialize(self):
 		self.var_date_label = tk.StringVar()
 		time = "{} {}".format(self.entry.str_date, self.entry.str_time_short)
-		print(time)
 		self.var_date_label.set(time)
 		self.var_title_input = tk.StringVar()
+		self.var_title_input.set(self.entry.title)
 		self.var_text_input = tk.StringVar()
+		self.var_text_input.set(self.entry.text)
 		self.var_tags_input = tk.StringVar()
+		self.var_tags_input.set(", ".join(self.entry.tags))
 
 		# Frames
 		frame_title = tk.Frame(self, height=10, width=256)
@@ -64,6 +67,7 @@ class Journalentry_tk(tk.Tk):
 		                          wrap="word",
 		                          yscrollcommand=text_scroll.set,
 		                          font=jf.config.font_content)
+		self.text_input.insert("end", self.entry.text)
 		self.text_input.focus()
 		text_scroll.config(command=self.text_input.yview)
 
@@ -108,21 +112,29 @@ class Journalentry_tk(tk.Tk):
 				self.entry.tags = tags
 				self.entry.save()
 
-				self.destroy()
+				self.on_close()
 		except Exception as e:
 			e = str(e) + "\nBackup your entry and fix the error, you lazy bum."
 			tk.messagebox.showwarning("Exception", e)
 
+	def on_close(self):
+		self.destroy()
+		if self.standalone:
+			self.parent.destroy()
 
-def open_edit(master, entry):
-	app = Journalentry_tk(master.__repr__(), entry)
+
+def open_edit(parent, entry):
+	app = Journalentry_tk(parent, entry)
 	app.title("Journal - Edit")
 	app.iconbitmap("media/icon.ico")
-	app.mainloop()
+	app.grab_set()
+	parent.wait_window(app)
 
 
 if __name__ == "__main__":
-	app = Journalentry_tk()
+	root = tk.Tk()
+	root.withdraw()
+	app = Journalentry_tk(root, standalone=True)
 	app.title("Journal - Entry")
 	app.iconbitmap("media/icon.ico")
 	app.mainloop()

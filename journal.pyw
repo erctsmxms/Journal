@@ -10,7 +10,6 @@ import journalentry
 class Journal_tk(tk.Tk):
 	def __init__(self):
 		tk.Tk.__init__(self, None)
-		#self.parent = parent
 		self.entries = []
 		self.initialize()
 		self.load_entries()
@@ -113,11 +112,7 @@ class Journal_tk(tk.Tk):
 		# Insert all entries
 		for i in range(len(self.entries)):
 			entry = self.entries[i]
-			text = f"{entry.str_date} {entry.str_time_short}"
-			if entry.title:
-				text += f" {entry.title}"
-
-			self.entry_list.insert("end", text)
+			self.entry_list.insert("end", str(entry))
 
 	def search_result_update(self):
 		search_string = self.var_search_input.get().strip()
@@ -129,16 +124,11 @@ class Journal_tk(tk.Tk):
 
 	####################################################################
 	# Events
-	def on_entry_list_select(self, event):
+	def on_entry_list_select(self, event=None):
 		index = self.entry_list.curselection()[0]
 		entry = self.entries[index]
 
-		label = f"{entry.str_date} {entry.str_time_short}"
-		if entry.title:
-			label += f" {entry.title}"
-		self.var_preview_label.set(label)
-		# Have to switch the text box on and off to write to it
-		#self.preview_label.config(text=str(entry))
+		self.var_preview_label.set(str(entry))
 		self.preview_text.config(state="normal")
 		self.preview_text.delete("1.0", "end")
 		self.preview_text.insert("end", entry.text)
@@ -146,12 +136,14 @@ class Journal_tk(tk.Tk):
 		self.var_tags_label.set("Tags: " + ", ".join(entry.tags))
 
 	def on_entry_list_doubleclick(self, event):
-		# TODO: This doesn't work. The new window doesn't contain the
-		# entry's info. Focus can also be given back to master window,
-		# which ideally shouldn't happen.
 		index = self.entry_list.curselection()[0]
 		entry = self.entries[index]
 		journalentry.open_edit(self, entry)
+		# Update gui with changes
+		self.entry_list.delete(index)
+		self.entry_list.insert(index, str(entry))
+		self.entry_list.select_set(index)
+		self.on_entry_list_select()  # Update preview
 
 	def on_entry_delete(self, event):
 		index = self.entry_list.curselection()[0]

@@ -80,9 +80,9 @@ class Entry():
 
 	def __str__(self):
 		if self.title:
-			return "{} - {} - {}".format(self.str_date, self.str_time, self.title)
+			return "{} {} {}".format(self.str_date, self.str_time_short, self.title)
 		else:
-			return "{} - {}".format(self.str_date, self.str_time)
+			return "{} {}".format(self.str_date, self.str_time_short)
 
 	###########################################################################
 
