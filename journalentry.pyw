@@ -42,15 +42,6 @@ class Journalentry_tk(tk.Tk):
 
 		########
 		# Title
-
-		# Delete later
-		#self.__date_input = tk.Entry(frame_title,
-		#                             textvariable=self.__var_date_input,
-		#                             font=jf.config.font_label,
-		#                             width=24)
-		#self.__date_input.grid(column=0, row=0, padx=2)
-		# -----
-
 		self.date_label = tk.Label(frame_title,
 		                           anchor="w",
 		                           textvariable=self.var_date_label,
@@ -97,20 +88,6 @@ class Journalentry_tk(tk.Tk):
 
 	def on_save_click(self, event):
 		try:
-			# Delete this later
-			#date, time = self.__var_date_input.get().split(" ")
-			#date = [int(i) for i in date.split("-")]
-			#time = [int(i) for i in time.split(":")]
-			#datetime = {
-			#	"year": date[0],
-			#	"month": date[1],
-			#	"day": date[2],
-			#	"hour": time[0],
-			#	"minute": time[1],
-			#	"second": 0
-			#}
-			# -----
-
 			title = self.var_title_input.get().strip()
 			text = self.text_input.get("1.0", "end-1c")
 			tags = self.var_tags_input.get().split(",")
@@ -125,7 +102,6 @@ class Journalentry_tk(tk.Tk):
 				self.entry.title = title
 				self.entry.text = text
 				self.entry.tags = tags
-				#self.entry.datetime = datetime
 				self.entry.save()
 
 				self.destroy()
