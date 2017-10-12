@@ -44,6 +44,11 @@ class Journalentry_tk(tk.Tk):
 		frame_text.rowconfigure(0, weight=1)
 		frame_tags.columnconfigure(1, weight=1)
 
+<<<<<<< HEAD
+=======
+		########
+		# Title
+>>>>>>> master
 		self.date_label = tk.Label(frame_title,
 		                           anchor="w",
 		                           textvariable=self.var_date_label,
@@ -93,7 +98,8 @@ class Journalentry_tk(tk.Tk):
 			title = self.var_title_input.get().strip()
 			text = self.text_input.get("1.0", "end-1c")
 			tags = self.var_tags_input.get().split(",")
-			tags = [i for i in tags if i.strip()]  # Strips and removes empty tags
+			# Strips and removes empty tags
+			tags = [i.strip() for i in tags if i.strip()]
 
 			if text.strip() == "":
 				tk.messagebox.showwarning("Oops",
