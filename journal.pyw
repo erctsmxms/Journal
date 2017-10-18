@@ -144,6 +144,7 @@ class Journal_tk(tk.Tk):
 		self.entry_list.insert(index, str(entry))
 		self.entry_list.select_set(index)
 		self.on_entry_list_select()  # Update preview
+		self.entry_list.see(index)
 
 	def on_entry_delete(self, event):
 		index = self.entry_list.curselection()[0]
